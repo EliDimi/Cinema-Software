@@ -1,10 +1,11 @@
 #pragma once
 #include <iostream>
 #include <cstring>
+#include <fstream>
 
 using namespace std;
 
-// Represents a cinema hall with seats arranged in rows and columns.
+// Represents a cinema hall with seats arranged in rows and columns
 class Hall {
 private:
     char name[20];        // Hall identifier
@@ -13,7 +14,10 @@ private:
     bool seats[20][20];   // 2D array representing seat occupancy
 
 public:
-    // Constructor: Initializes hall with given name and dimensions
+    // Default constructor
+    Hall();
+
+    // Parameterized constructor
     Hall(const char* name, int rows, int cols);
 
     // Getters
@@ -35,4 +39,10 @@ public:
 
     // Clears all seat reservations
     void clear();
+
+    // Save hall to binary stream
+    void saveToStream(ofstream& out) const;
+
+    // Load hall from binary stream
+    void loadFromStream(ifstream& in);
 };

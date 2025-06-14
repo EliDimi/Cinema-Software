@@ -1,5 +1,7 @@
 #pragma once
 #include <cstring>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 // Enum to represent movie genres
@@ -11,28 +13,27 @@ enum Genre {
 
 // Abstract base class for all types of movies
 class Movie {
-private:
+protected:
     char id[20];           // Unique movie ID
     char title[100];       // Movie title
-    double rating;         // User rating (e.g., from 1 to 10)
+    double rating;         // User rating
     int duration;          // Duration in minutes
     int releaseYear;       // Year of release
-    char hall[20];         // Hall where the movie is shown
-    char date[11];         // Screening date (YYYY-MM-DD)
-    char startTime[6];     // Start time (HH:MM)
-    char endTime[6];       // End time (HH:MM)
+    char hall[20];         // Hall name
+    char date[11];         // YYYY-MM-DD
+    char startTime[6];     // HH:MM
+    char endTime[6];       // HH:MM
 
 public:
-    // Constructor
+    // Default constructor
+    Movie();
+
+    // Parameterized constructor
     Movie(const char* id, const char* title, double rating, int duration,
         int releaseYear, const char* hall, const char* date,
         const char* startTime, const char* endTime);
 
-    // Virtual destructor
-    virtual ~Movie();
-
-    // Pure virtual function to calculate ticket price
-    virtual double calculateTicketPrice() const = 0;
+    virtual ~Movie() {}
 
     // Getters
     const char* getId() const;
@@ -48,51 +49,77 @@ public:
     // Setters
     void setTitle(const char* newTitle);
     void setHall(const char* newHall);
+    void setRating(double newRating);  // NEW
+
+    // Calculates ticket price (must be implemented by subclasses)
+    virtual double calculateTicketPrice() const = 0;
+
+    // Get genre type (for saving)
+    virtual Genre getGenre() const = 0;
+
+    // Save and load
+    virtual void saveToStream(ofstream& out) const;
+    virtual void loadFromStream(ifstream& in);
 };
 
-// Derived class for action movies
+// -----------------------------
+// ActionMovie
+// -----------------------------
 class ActionMovie : public Movie {
 private:
-    int actionIntensity;   // Value from 0 to 20
+    int actionIntensity;
 
 public:
-    // Constructor
+    ActionMovie();
     ActionMovie(const char* id, const char* title, double rating, int duration,
         int releaseYear, const char* hall, const char* date,
         const char* startTime, const char* endTime, int actionIntensity);
 
-    // Ticket price calculation for action movies
     double calculateTicketPrice() const override;
+    Genre getGenre() const override;
+
+    void saveToStream(ofstream& out) const override;
+    void loadFromStream(ifstream& in) override;
 };
 
-// Derived class for drama movies
+// -----------------------------
+// DramaMovie
+// -----------------------------
 class DramaMovie : public Movie {
 private:
-    bool hasComedyElements;   // True if contains comedy elements
+    bool hasComedyElements;
 
 public:
-    // Constructor
+    DramaMovie();
     DramaMovie(const char* id, const char* title, double rating, int duration,
         int releaseYear, const char* hall, const char* date,
         const char* startTime, const char* endTime, bool hasComedyElements);
 
-    // Ticket price calculation for drama movies
     double calculateTicketPrice() const override;
+    Genre getGenre() const override;
+
+    void saveToStream(ofstream& out) const override;
+    void loadFromStream(ifstream& in) override;
 };
 
-// Derived class for documentaries
+// -----------------------------
+// DocumentaryMovie
+// -----------------------------
 class DocumentaryMovie : public Movie {
 private:
-    char theme[50];               // Documentary theme
-    bool isBasedOnTrueEvents;     // True if based on true events
+    char theme[50];
+    bool isBasedOnTrueEvents;
 
 public:
-    // Constructor
+    DocumentaryMovie();
     DocumentaryMovie(const char* id, const char* title, double rating, int duration,
         int releaseYear, const char* hall, const char* date,
         const char* startTime, const char* endTime,
         const char* theme, bool isBasedOnTrueEvents);
 
-    // Ticket price calculation for documentaries
     double calculateTicketPrice() const override;
+    Genre getGenre() const override;
+
+    void saveToStream(ofstream& out) const override;
+    void loadFromStream(ifstream& in) override;
 };
