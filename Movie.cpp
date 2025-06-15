@@ -87,9 +87,6 @@ ActionMovie::ActionMovie(const char* id, const char* title, double rating, int d
     actionIntensity(intensity) {
 }
 
-double ActionMovie::calculateTicketPrice() const {
-    return 8.0 + actionIntensity * 0.5;
-}
 
 Genre ActionMovie::getGenre() const {
     return ACTION;
@@ -120,9 +117,6 @@ DramaMovie::DramaMovie(const char* id, const char* title, double rating, int dur
     hasComedyElements(hasComedy) {
 }
 
-double DramaMovie::calculateTicketPrice() const {
-    return hasComedyElements ? 9.0 : 7.5;
-}
 
 Genre DramaMovie::getGenre() const {
     return DRAMA;
@@ -157,9 +151,6 @@ DocumentaryMovie::DocumentaryMovie(const char* id, const char* title, double rat
     strcpy(this->theme, theme);
 }
 
-double DocumentaryMovie::calculateTicketPrice() const {
-    return isBasedOnTrueEvents ? 6.0 : 5.0;
-}
 
 Genre DocumentaryMovie::getGenre() const {
     return DOCUMENTARY;
@@ -177,4 +168,20 @@ void DocumentaryMovie::loadFromStream(ifstream& in) {
     Movie::loadFromStream(in);
     in.read(theme, sizeof(theme));
     in.read(reinterpret_cast<char*>(&isBasedOnTrueEvents), sizeof(isBasedOnTrueEvents));
+}
+
+void Movie::setDate(const char* newDate) { strcpy(date, newDate); }
+void Movie::setStartTime(const char* t) { strcpy(startTime, t); }
+void Movie::setEndTime(const char* t) { strcpy(endTime, t); }
+
+double ActionMovie::calculateTicketPrice() const {
+    return 9.0 + actionIntensity * 1.5;
+}
+
+double DramaMovie::calculateTicketPrice() const {
+    return 7.0 + (hasComedyElements ? 2.0 : 0.0);
+}
+
+double DocumentaryMovie::calculateTicketPrice() const {
+    return 5.0 + (isBasedOnTrueEvents ? 3.0 : 0.0);
 }

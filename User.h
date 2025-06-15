@@ -1,47 +1,53 @@
+﻿// User.h
 #pragma once
-#include <cstring>
-#include <iostream>
 #include <fstream>
 #include "Ticket.h"
 
-using namespace std;
-
-// Represents a user account (admin or normal) in the system
 class User {
 private:
-    char username[30];        // Unique username
-    char password[30];        // Account password
-    double balance;           // Available funds
-    Ticket* tickets[50];      // Array of owned tickets
-    int ticketCount;          // Number of tickets
-    bool isAdmin;             // True if user is an admin
+    char    username[30];
+    char    password[30];
+    double  balance;
+    Ticket* tickets[50];
+    int     ticketCount;
+    bool    isAdmin;
+
+    // NEW: history of past tickets
+    Ticket* history[50];
+    int     historyCount;
 
 public:
-    // Default constructor
     User();
-
-    // Constructor with parameters
     User(const char* u, const char* p, bool admin = false);
 
-    // Getters
     const char* getUsername() const;
     const char* getPassword() const;
-    double getBalance() const;
-    bool getIsAdmin() const;
+    double      getBalance()  const;
+    bool        getIsAdmin()  const;
 
-    // Add money to balance
     void addFunds(double amount);
+    bool buyTicket(const char* movieId, const char* hallName,
+        const char* date, const char* time,
+        int row, int col, double price);
 
-    // Buys a ticket with full details
-    bool buyTicket(const char* movieId, const char* hallName, const char* date,
-        const char* time, int row, int col, double price);
-
-    // Displays all owned tickets
     void printTickets() const;
 
-    // Save user to binary file stream
-    void saveToStream(ofstream& out) const;
+    /// Move any tickets with date < today into history[]
+    void expirePastTickets();
+    /// Print watched‐history tickets
+    void printHistory() const;
 
-    // Load user from binary file stream
-    void loadFromStream(ifstream& in);
+    void saveToStream(std::ofstream& out) const;
+    void loadFromStream(std::ifstream& in);
+    
+    void saveHistoryToStream(std::ofstream& out) const;
+    void loadHistoryFromStream(std::ifstream& in);
+
+    void removeTicketsForMovie(const char* movieId);
+    void removeHistoryForMovie(const char* movieId);
+
+    void updateTicketsForMovie(const char* movieId,
+        const char* newDate,
+        const char* newTime);
+
 };

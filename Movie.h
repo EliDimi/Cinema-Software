@@ -33,6 +33,10 @@ public:
         int releaseYear, const char* hall, const char* date,
         const char* startTime, const char* endTime);
 
+    void setDate(const char* newDate);
+    void setStartTime(const char* newStartTime);
+    void setEndTime(const char* newEndTime);
+
     virtual ~Movie() {}
 
     // Getters

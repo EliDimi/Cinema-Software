@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <cstring>
 #include <iostream>
 #include <fstream>
@@ -34,6 +34,15 @@ public:
 
     // Displays ticket info
     void printTicket() const;
+
+    void setDate(const char* newDate) {
+        std::strncpy(date, newDate, sizeof(date));
+        date[sizeof(date) - 1] = '\0';
+    }
+    void setTime(const char* newTime) {
+        std::strncpy(time, newTime, sizeof(time));
+        time[sizeof(time) - 1] = '\0';
+    }
 
     // Saves ticket to a binary stream
     void saveToStream(ofstream& out) const;

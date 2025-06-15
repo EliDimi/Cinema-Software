@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include "Hall.h"
 #include <iostream>
 #include <fstream>
@@ -53,13 +53,14 @@ bool Hall::reserveSeat(int row, int col) {
 }
 
 void Hall::printHall() const {
-    cout << "Hall: " << name << endl;
+    cout << "Hall: " << name << "\n";
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            cout << (seats[i][j] ? "[X]" : "[ ]");
+            cout << (seats[i][j] ? 'X' : 'O') << ' ';
         }
-        cout << endl;
+        cout << "\n";
     }
+    cout << endl;
 }
 
 void Hall::clear() {

@@ -5,16 +5,16 @@
 
 class CinemaSystem {
 private:
-    User* users[100];        // List of users
-    int userCount;           // Number of users
+    User* users[100] = { nullptr };
+    int    userCount = 0;
 
-    Movie* movies[100];      // List of movies
-    int movieCount;          // Number of movies
+    Movie* movies[100] = { nullptr };
+    int    movieCount = 0;
 
-    Hall halls[20];          // List of halls
-    int hallCount;           // Number of halls
+    Hall   halls[20];    
+    int    hallCount = 0;
 
-    User* currentUser;       // Currently logged in user
+    User* currentUser = nullptr;
 
 public:
     // Constructor & Destructor
@@ -29,10 +29,13 @@ public:
 
     // User account operations (admin)
     void listUsers() const;
-    void listUserTickets(const char* username);
+    void listUserTickets(const char* username); // For admin
     bool removeUser(const char* username);
-    void listUserHistory(const char* username);
+    void listUserHistory(const char* username); // For admin
+    void listUserHistory() const;               // For current user
     void rateMovie(const char* movieId, double newRating);
+
+    static int toMinutes(const char* hhmm);
 
     // Movie operations
     void addMovie(Movie* movie);
@@ -44,6 +47,10 @@ public:
     void addHall(const Hall& hall);
     bool removeHallByName(const char* hallName);
     void closeHallByName(const char* hallName);
+    void listHalls() const;
+    bool changeMovieHallIfPossible(const char* movieId, const char* newHallName);
+    bool changeMovieDateIfPossible(const char* movieId, const char* newDate);
+    bool changeMovieTimeIfPossible(const char* movieId, const char* newStartTime, const char* newEndTime);
 
     // File storage
     void saveUsersToFile(const char* filename);
@@ -55,8 +62,12 @@ public:
     void saveHallsToFile(const char* filename);
     void loadHallsFromFile(const char* filename);
 
-    // --- New user commands ---
     bool buyTicket(const char* movieId, int row, int col); // Buy a ticket for current user
     void listMovies() const;                               // Show all scheduled movies
-    void listUserHistory() const;                          // Show ticket history of current user
+
+    bool isTimeSlotFree(const char* hallName,
+                        const char* date,
+                        const char* startTime,
+                        const char* endTime) const;
+
 };
