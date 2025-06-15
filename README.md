@@ -4,6 +4,7 @@ This is a C++ console-based application that simulates a cinema management syste
 
 ✨ Features
 
+
 👤 User functionality:
 
 •	Register and log in
@@ -19,6 +20,7 @@ This is a C++ console-based application that simulates a cinema management syste
 •	Rate watched movies
 
 
+
 🛠️ Admin functionality:
 
 •	Add/remove movies and halls
@@ -30,6 +32,7 @@ This is a C++ console-based application that simulates a cinema management syste
 •	List all users and their ticket history
 
 •	Remove users from the system
+
 
 
 💾 Persistence:
